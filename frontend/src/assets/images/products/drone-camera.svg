@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="droneBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#008080"/>
+      <stop offset="100%" stop-color="#004D40"/>
+    </radialGradient>
+    <filter id="droneGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="15" stdDeviation="20" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#droneBg)" rx="32"/>
+  
+  <g filter="url(#droneGlow)" transform="translate(60, 80) scale(0.8)">
+    <!-- Drone Body & Arms -->
+    <line x1="150" y1="150" x2="450" y2="450" stroke="#1A1F2C" stroke-width="26" stroke-linecap="round"/>
+    <line x1="450" y1="150" x2="150" y2="450" stroke="#1A1F2C" stroke-width="26" stroke-linecap="round"/>
+    
+    <!-- Rotors & Motors -->
+    <!-- Top Left -->
+    <circle cx="150" cy="150" r="40" fill="#2E384D"/>
+    <ellipse cx="150" cy="150" rx="90" ry="24" fill="#00E5FF" opacity="0.35" transform="rotate(25 150 150)"/>
+    <circle cx="150" cy="150" r="14" fill="#00E5FF"/>
+    
+    <!-- Top Right -->
+    <circle cx="450" cy="150" r="40" fill="#2E384D"/>
+    <ellipse cx="450" cy="150" rx="90" ry="24" fill="#00E5FF" opacity="0.35" transform="rotate(-25 450 150)"/>
+    <circle cx="450" cy="150" r="14" fill="#00E5FF"/>
+    
+    <!-- Bottom Left -->
+    <circle cx="150" cy="450" r="40" fill="#2E384D"/>
+    <ellipse cx="150" cy="450" rx="90" ry="24" fill="#00E5FF" opacity="0.35" transform="rotate(-25 150 450)"/>
+    <circle cx="150" cy="450" r="14" fill="#00E5FF"/>
+    
+    <!-- Bottom Right -->
+    <circle cx="450" cy="450" r="40" fill="#2E384D"/>
+    <ellipse cx="450" cy="450" rx="90" ry="24" fill="#00E5FF" opacity="0.35" transform="rotate(25 450 450)"/>
+    <circle cx="450" cy="450" r="14" fill="#00E5FF"/>
+    
+    <!-- Central Fuselage -->
+    <rect x="230" y="210" width="140" height="180" rx="40" fill="#111625"/>
+    <rect x="245" y="225" width="110" height="150" rx="28" fill="#1F293D"/>
+    
+    <!-- Thermal Optical Gimbal -->
+    <circle cx="300" cy="300" r="56" fill="#0F172A"/>
+    <circle cx="300" cy="300" r="42" fill="#0284C7"/>
+    <circle cx="300" cy="300" r="28" fill="#38BDF8"/>
+    <circle cx="292" cy="292" r="10" fill="#FFFFFF" opacity="0.8"/>
+    
+    <!-- LED Lights -->
+    <circle cx="260" cy="235" r="5" fill="#10B981"/>
+    <circle cx="340" cy="235" r="5" fill="#EF4444"/>
+    <circle cx="300" cy="370" r="6" fill="#00E5FF"/>
+    
+    <!-- Futuristic Status Ring -->
+    <circle cx="300" cy="300" r="70" stroke="#00E5FF" stroke-width="3" stroke-dasharray="8 6" fill="none" opacity="0.75"/>
+  </g>
+  <text x="300" y="550" text-anchor="middle" fill="#E2E8F0" font-family="'Manrope', sans-serif" font-weight="700" font-size="24" letter-spacing="3">AI PATROL DRONE X4</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="aiBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1E1B4B"/>
+      <stop offset="100%" stop-color="#0F0C29"/>
+    </radialGradient>
+    <linearGradient id="aiNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#aiBg)" rx="32"/>
+  
+  <g transform="translate(100, 100)">
+    <!-- Neural Matrix Target Lines -->
+    <circle cx="200" cy="200" r="160" stroke="#4F46E5" stroke-width="2" stroke-dasharray="6 6" fill="none" opacity="0.4"/>
+    <circle cx="200" cy="200" r="120" stroke="#06B6D4" stroke-width="2" stroke-dasharray="10 8" fill="none" opacity="0.6"/>
+    
+    <!-- AI PTZ Camera Base -->
+    <rect x="140" y="40" width="120" height="30" rx="6" fill="#334155"/>
+    <path d="M 170 70 L 170 120 L 230 120 L 230 70 Z" fill="#475569"/>
+    <ellipse cx="200" cy="130" rx="70" ry="20" fill="#1E293B"/>
+    
+    <!-- Dome Glass Sphere -->
+    <circle cx="200" cy="200" r="90" fill="#0F172A" stroke="url(#aiNeon)" stroke-width="4"/>
+    <circle cx="200" cy="200" r="60" fill="#0284C7"/>
+    <circle cx="200" cy="200" r="35" fill="#0369A1"/>
+    <circle cx="200" cy="200" r="18" fill="#0C4A6E"/>
+    <circle cx="188" cy="188" r="8" fill="#38BDF8"/>
+    
+    <!-- Facial Recognition Bounding Box -->
+    <rect x="90" y="90" width="220" height="220" fill="none" stroke="#38BDF8" stroke-width="2" opacity="0.8"/>
+    <!-- Corner Brackets -->
+    <path d="M 80 120 L 80 80 L 120 80" fill="none" stroke="#00E5FF" stroke-width="4"/>
+    <path d="M 320 120 L 320 80 L 280 80" fill="none" stroke="#00E5FF" stroke-width="4"/>
+    <path d="M 80 280 L 80 320 L 120 320" fill="none" stroke="#00E5FF" stroke-width="4"/>
+    <path d="M 320 280 L 320 320 L 280 320" fill="none" stroke="#00E5FF" stroke-width="4"/>
+    
+    <!-- Target Tag -->
+    <rect x="90" y="55" width="110" height="26" rx="4" fill="#0284C7"/>
+    <text x="145" y="73" text-anchor="middle" fill="#FFFFFF" font-family="'Manrope', sans-serif" font-weight="700" font-size="12">AI TRACKING</text>
+  </g>
+</svg>
