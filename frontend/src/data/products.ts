@@ -19,7 +19,7 @@ export const productsData: Product[] = [
     subtitle: 'Ready to Harvest | 5-7 day grow cycle',
     description: 'High-speed license plate recognition with deep learning AI OCR engines for automated gates, parking facilities, and toll plazas.',
     image: anprImg,
-    bgColor: '#FF6B00', // Vibrant Orange
+    bgColor: '#E50914', // Vibrant Orange
     badge: 'AI Powered',
     specs: ['99.4% OCR Accuracy', 'Up to 120 km/h tracking', 'IR Night Vision 50m']
   },
@@ -41,7 +41,7 @@ export const productsData: Product[] = [
     subtitle: 'Ready to Harvest | 5-7 day grow cycle',
     description: 'Ultra HD 4K IP bullet cameras with intelligent perimeter tripwire detection, edge storage, and rugged weatherproof housing.',
     image: cctvImg,
-    bgColor: '#E50914', // Vibrant Red
+    bgColor: '#FF6B00', // Vibrant Red
     badge: '24/7 Guard',
     specs: ['4K Ultra HD Sensor', 'IP67 Weatherproof', 'Smart Motion Tripwire']
   },

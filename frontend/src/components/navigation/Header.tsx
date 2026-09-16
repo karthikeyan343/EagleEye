@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-import logoSvg from "../../assets/logos/Logo1.png";
+import logoSvg from "../../assets/images/common/image360.png";
 import { navigationLinks } from "../../data/navigation";
 
 interface HeaderProps {
@@ -203,10 +203,10 @@ export const Header: React.FC<HeaderProps> = ({
           position: "fixed",
 
           top: {
-            xs: 12,
-            sm: 16,
+            xs: 26,
+            sm: 26,
             md: 40,
-            lg: 50,
+            lg: 45,
           },
 
           left: 0,
@@ -221,10 +221,10 @@ export const Header: React.FC<HeaderProps> = ({
            * Your BASE horizontal padding values.
            */
 px: {
-  xs: isScrolled ? 12 : 8,
-  sm: isScrolled ? 16 : 10,
-  md: isScrolled ? 20 : 12,
-  lg: isScrolled ? 6 : 12,
+  xs: isScrolled ? 3 : 4,
+  sm: isScrolled ? 2 : 4,
+  md: isScrolled ? 10 : 9,
+  lg: isScrolled ? 5 : 7,
 },
 
           pointerEvents: isHidden
@@ -285,10 +285,10 @@ px: {
              * -------------------------------------------------
              */
             height: {
-              xs: "54px",
+              xs: "58px",
               sm: "60px",
-              md: "68px",
-              lg: "70px",
+              md: "62px",
+              lg: "65px",
             },
 
             boxSizing: "border-box",
@@ -399,9 +399,9 @@ px: {
               flexShrink: 0,
 
               height: {
-                xs: "30px",
-                sm: "34px",
-                md: "38px",
+                xs: "38px",
+                sm: "38px",
+                md: "40px",
                 lg: "50px",
               },
 
@@ -422,8 +422,8 @@ px: {
               sx={{
                 display: "block",
 
-                width: "100%",
-                height: "100%",
+                width: "90%",
+                height: "90%",
 
                 objectFit: "contain",
               }}
@@ -564,7 +564,7 @@ px: {
                   fontSize: {
                     sm: "10px",
                     md: "12px",
-                    lg: "16px",
+                    lg: "14px",
                   },
 
                   fontWeight: 500,
