@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import React, { useState } from "react";
+import { Box } from "@mui/material";
 
-import { Header } from '../../components/navigation/Header';
-import { Hero } from '../../sections/home/Hero';
-import { ProductsSection } from '../../sections/products/ProductsSection';
-import { StatsSection } from '../../sections/home/StatsSection';
-import { ServicesCarousel } from '../../sections/home/ServicesCarousel';
-import { FeaturedWorks } from '../../sections/about/FeaturedWorks';
-import { WhoWeAre } from '../../sections/about/WhoWeAre';
-import { ContactSection } from '../../sections/contact/ContactSection';
-import { Footer } from '../../sections/contact/Footer';
+import { Header } from "../../components/navigation/Header";
+import { Hero } from "../../sections/home/Hero";
+import { ProductsSection } from "../../sections/products/ProductsSection";
+import { StatsSection } from "../../sections/home/StatsSection";
+import { ServicesCarousel } from "../../sections/home/ServicesCarousel";
+import { FeaturedWorks } from "../../sections/about/FeaturedWorks";
+import { WhoWeAre } from "../../sections/about/WhoWeAre";
+import { ContactSection } from "../../sections/contact/ContactSection";
+import { Footer } from "../../sections/contact/Footer";
 
-import { QuoteModal } from '../../components/ui/QuoteModal';
-import { ProductModal } from '../../components/ui/ProductModal';
+import { QuoteModal } from "../../components/ui/QuoteModal";
+import { ProductModal } from "../../components/ui/ProductModal";
 
-import { Product } from '../../types/product';
+import { Product } from "../../types/product";
 
 export const Home: React.FC = () => {
   const [quoteOpen, setQuoteOpen] = useState(false);
+
   const [selectedProduct, setSelectedProduct] =
     useState<Product | null>(null);
 
   const [quoteDefaultProduct, setQuoteDefaultProduct] =
-    useState('');
+    useState("");
 
-  const handleOpenQuote = (defaultProd = '') => {
+  const handleOpenQuote = (defaultProd = "") => {
     setQuoteDefaultProduct(defaultProd);
     setQuoteOpen(true);
   };
@@ -42,8 +43,8 @@ export const Home: React.FC = () => {
 
     if (element) {
       element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+        behavior: "smooth",
+        block: "start",
       });
     }
   };
@@ -51,113 +52,168 @@ export const Home: React.FC = () => {
   return (
     <Box
       sx={{
-        width: '100%',
-        minHeight: '100dvh',
-        backgroundColor: '#FFFFFF',
-        overflowX: 'hidden',
+        width: "100%",
+        minHeight: "100vh",
+        backgroundColor: "#ffffff",
+        overflowX: "hidden",
       }}
     >
-      {/* FIRST VIEWPORT */}
+      {/* =====================================================
+          FIRST VIEWPORT / HERO
+          ===================================================== */}
+
       <Box
         sx={{
-          width: '100%',
-          height: '100dvh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxSizing: 'border-box',
-          backgroundColor: '#FFFFFF',
-          overflow: 'hidden',
+          position: "relative",
+
+          width: "100%",
+
+          height: "100dvh",
+
+          minHeight: "600px",
+
+          boxSizing: "border-box",
+
+          display: "flex",
+
+          alignItems: "center",
+
+          justifyContent: "center",
+
+          overflow: "hidden",
+
+          backgroundColor: "#ffffff",
+
+          px: {
+            xs: 1,
+            sm: 2,
+            md: 2.5,
+            lg: 3.25,
+          },
+
+          py: {
+            xs: 1,
+            sm: 1.5,
+            md: 2,
+          },
         }}
       >
-        {/* OUTER FIGMA FRAME */}
+        {/* =================================================
+            HERO FRAME
+            ================================================= */}
+
         <Box
+          id="home"
           sx={{
-            position: 'relative',
-            width: {
-              xs: '94vw',
-              sm: '92vw',
-              md: '91vw',
-              lg: '96vw',
-            },
-            maxWidth: '1552px',
-            height: {
-              xs: 'calc(100dvh - 24px)',
-              sm: 'calc(100dvh - 32px)',
-              md: 'min(805px, calc(100dvh - 40px))',
-              lg: 'min(805px, calc(100dvh - 48px))',
-            },
-            maxHeight: {
-              xs: 'calc(100dvh - 24px)',
-              sm: 'calc(100dvh - 32px)',
-              md: '805px',
-            },
-            boxSizing: 'border-box',
+            position: "relative",
+
+            width: "100%",
+
+            maxWidth: "1552px",
+
+            height: "100%",
+
+            minHeight: 0,
+
+            maxHeight: "100%",
+
+            boxSizing: "border-box",
+
+            overflow: "hidden",
+
             borderRadius: {
-              xs: '12px',
-              sm: '14px',
-              md: '16px',
+              xs: "20px",
+              sm: "26px",
+              md: "32px",
+              lg: "36px",
             },
-            backgroundColor: '#0052FF',
-            overflow: 'hidden',
+
+            backgroundColor: "#ffffff",
           }}
         >
-          {/* FRAME 52 */}
-          <Box
-            sx={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              boxSizing: 'border-box',
-              borderRadius: {
-                xs: '10px',
-                sm: '12px',
-                md: '16px',
-              },
-              overflow: 'hidden',
-              background:
-                'linear-gradient(180deg, #0245CA 0%, #01308D 100%)',
-            }}
-          >
-            {/* HEADER */}
-            <Header
-              onOpenQuote={() => handleOpenQuote()}
-            />
+          {/* =================================================
+              NAVBAR
+              
+              IMPORTANT:
+              Header is now INSIDE the Hero frame.
+              This allows the navbar to use Hero-relative
+              positioning like the mentor version.
+              ================================================= */}
 
-            {/* HERO */}
-            <Hero
-              onExploreProducts={() =>
-                scrollToSection('products')
-              }
-              onExploreServices={() =>
-                scrollToSection('services')
-              }
-            />
-          </Box>
+          <Header
+            onOpenQuote={() => handleOpenQuote()}
+          />
+
+          {/* =================================================
+              HERO
+              ================================================= */}
+
+          <Hero
+            onExploreProducts={() =>
+              scrollToSection("products")
+            }
+            onExploreServices={() =>
+              scrollToSection("services")
+            }
+          />
         </Box>
       </Box>
 
-      {/* REST OF HOME PAGE */}
+      {/* =====================================================
+          PRODUCTS
+          ===================================================== */}
+
       <ProductsSection />
+
+      {/* =====================================================
+          STATISTICS
+          ===================================================== */}
 
       <StatsSection />
 
+      {/* =====================================================
+          SERVICES
+          ===================================================== */}
+
       <ServicesCarousel />
+
+      {/* =====================================================
+          FEATURED WORKS
+          ===================================================== */}
 
       <FeaturedWorks />
 
+      {/* =====================================================
+          WHO WE ARE
+          ===================================================== */}
+
       <WhoWeAre />
+
+      {/* =====================================================
+          CONTACT
+          ===================================================== */}
 
       <ContactSection />
 
+      {/* =====================================================
+          FOOTER
+          ===================================================== */}
+
       <Footer />
 
-      {/* MODALS */}
+      {/* =====================================================
+          QUOTE MODAL
+          ===================================================== */}
+
       <QuoteModal
         open={quoteOpen}
         onClose={handleCloseQuote}
         defaultProduct={quoteDefaultProduct}
       />
+
+      {/* =====================================================
+          PRODUCT MODAL
+          ===================================================== */}
 
       <ProductModal
         product={selectedProduct}

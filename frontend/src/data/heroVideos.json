@@ -1,0 +1,29 @@
+[
+  {
+    "id": "hero-clip-1",
+    "fileName": "mp43.webm",
+    "title": "EagleEye AI Core",
+    "headline": "AI to protect the\nphysical world",
+    "subtitle": "Empowering industries with cutting-edge proactive AI security solutions. Transforming raw surveillance into actionable intelligence in real time.",
+    "duration": 7500,
+    "overlayOpacity": 0.72
+  },
+  {
+    "id": "hero-clip-2",
+    "fileName": "mp42.webm",
+    "title": "Real-Time Neural Vision",
+    "headline": "Next-Gen Proactive\nVision Intelligence",
+    "subtitle": "Sub-second multi-camera threat tracking and anomalous behavior detection for high-security environments.",
+    "duration": 7500,
+    "overlayOpacity": 0.72
+  },
+  {
+    "id": "hero-clip-3",
+    "fileName": "mp41.webm",
+    "title": "Autonomous Security Mesh",
+    "headline": "Autonomous Defense\nAt Enterprise Scale",
+    "subtitle": "Unified spatial monitoring and automated deterrence across campus and facility perimeters.",
+    "duration": 7500,
+    "overlayOpacity": 0.72
+  }
+]

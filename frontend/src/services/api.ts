@@ -1,4 +1,4 @@
-import { config } from '../config/env';
+import { config } from "../config/env";
 
 interface RequestOptions extends RequestInit {
   data?: unknown;
@@ -11,11 +11,14 @@ class ApiService {
     this.baseUrl = config.apiBaseUrl;
   }
 
-  async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+  async request<T>(
+    endpoint: string,
+    options: RequestOptions = {}
+  ): Promise<T> {
     const { data, headers, ...customConfig } = options;
 
     const requestHeaders: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(headers as Record<string, string>),
     };
 
@@ -24,19 +27,36 @@ class ApiService {
       headers: requestHeaders,
     };
 
-    if (data) {
+    if (data !== undefined) {
       configObj.body = JSON.stringify(data);
     }
 
-    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const cleanEndpoint = endpoint.startsWith("/")
+      ? endpoint
+      : `/${endpoint}`;
+
     const url = `${this.baseUrl}${cleanEndpoint}`;
 
     try {
       const response = await fetch(url, configObj);
-      const resData = await response.json();
+
+      // Safely read the response
+      const contentType = response.headers.get("content-type");
+
+      let resData: any = null;
+
+      if (contentType?.includes("application/json")) {
+        resData = await response.json();
+      } else {
+        const text = await response.text();
+        resData = text ? { message: text } : null;
+      }
 
       if (!response.ok) {
-        throw new Error(resData.message || `Request failed with status ${response.status}`);
+        throw new Error(
+          resData?.message ||
+            `Request failed with status ${response.status}`
+        );
       }
 
       return resData as T;
@@ -44,18 +64,34 @@ class ApiService {
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error('An unknown network error occurred');
+
+      throw new Error("An unknown network error occurred");
     }
   }
 
-  get<T>(endpoint: string, options?: RequestOptions): Promise<T> {
-    return this.request<T>(endpoint, { ...options, method: 'GET' });
+  get<T>(
+    endpoint: string,
+    options?: RequestOptions
+  ): Promise<T> {
+    return this.request<T>(endpoint, {
+      ...options,
+      method: "GET",
+    });
   }
 
-  post<T>(endpoint: string, data?: unknown, options?: RequestOptions): Promise<T> {
-    return this.request<T>(endpoint, { ...options, method: 'POST', data });
+  post<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: RequestOptions
+  ): Promise<T> {
+    return this.request<T>(endpoint, {
+      ...options,
+      method: "POST",
+      data,
+    });
   }
 }
 
 export const api = new ApiService();
+
 export default api;
