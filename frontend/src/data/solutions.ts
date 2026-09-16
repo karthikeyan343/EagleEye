@@ -24,12 +24,12 @@ export const servicesData: ServiceItem[] = [
       'CCTV Network Setup',
       'Remote CCTV Monitoring Setup',
       'CCTV Recording & Storage Configuration',
-      'CCTV Mobile Viewing Setup',
-      'Existing CCTV System Upgrade',
-      'CCTV Troubleshooting & Repair',
-      'CCTV Preventive Maintenance',
-      'CCTV System Expansion',
-      'CCTV AMC & Technical Support'
+      // 'CCTV Mobile Viewing Setup',
+      // 'Existing CCTV System Upgrade',
+      // 'CCTV Troubleshooting & Repair',
+      // 'CCTV Preventive Maintenance',
+      // 'CCTV System Expansion',
+      // 'CCTV AMC & Technical Support'
     ]
   },
   {
@@ -46,12 +46,12 @@ export const servicesData: ServiceItem[] = [
       'Crowd & Heatmap Analytics',
       'Object Abandonment Detection',
       'Automated Incident Alerts',
-      'Smart PTZ Auto-Tracking',
-      'Central Command Integration',
-      'Thermal Analytics Tuning',
-      'False Alarm Filtering',
-      'Behavioral Anomaly Detection',
-      'AI System Calibration & AMC'
+      // 'Smart PTZ Auto-Tracking',
+      // 'Central Command Integration',
+      // 'Thermal Analytics Tuning',
+      // 'False Alarm Filtering',
+      // 'Behavioral Anomaly Detection',
+      // 'AI System Calibration & AMC'
     ]
   },
   {
@@ -68,12 +68,12 @@ export const servicesData: ServiceItem[] = [
       'Vehicle Blacklist/Whitelist Sync',
       'High-Speed Capture Tuning',
       'RFID & ANPR Combo Setup',
-      'Parking Management Integration',
-      'Toll Gate Automation',
-      'Real-Time Audit Logging',
-      'Multi-Lane Synchronization',
-      'Vehicle OCR Troubleshooting',
-      'System Firmware Maintenance'
+      // 'Parking Management Integration',
+      // 'Toll Gate Automation',
+      // 'Real-Time Audit Logging',
+      // 'Multi-Lane Synchronization',
+      // 'Vehicle OCR Troubleshooting',
+      // 'System Firmware Maintenance'
     ]
   },
   {
@@ -90,12 +90,12 @@ export const servicesData: ServiceItem[] = [
       'HR & Attendance API Sync',
       'Instant Violation SMS Alerts',
       'Anti-Circumvention Testing',
-      'Shift-Based Screening Policies',
-      'Audit Trail Database Sync',
-      'Daily Device Health Check',
-      'Hygiene Mouthpiece Supply',
-      'Firmware Security Patches',
-      'Annual Calibration Certification'
+      // 'Shift-Based Screening Policies',
+      // 'Audit Trail Database Sync',
+      // 'Daily Device Health Check',
+      // 'Hygiene Mouthpiece Supply',
+      // 'Firmware Security Patches',
+      // 'Annual Calibration Certification'
     ]
   },
   {
@@ -112,12 +112,12 @@ export const servicesData: ServiceItem[] = [
       'ANPR Camera Ticket Link',
       'ERP & SAP Telemetry Bridge',
       'Driver Self-Service Terminals',
-      'Anti-Tampering Diagnostics',
-      'Government Stamping Support',
-      'Dual Display Indicator Setup',
-      'Weight Calibration & Repair',
-      'IoT Cloud Sync Config',
-      'Comprehensive Weigh AMC'
+      // 'Anti-Tampering Diagnostics',
+      // 'Government Stamping Support',
+      // 'Dual Display Indicator Setup',
+      // 'Weight Calibration & Repair',
+      // 'IoT Cloud Sync Config',
+      // 'Comprehensive Weigh AMC'
     ]
   },
   {
@@ -134,12 +134,12 @@ export const servicesData: ServiceItem[] = [
       'Live HD Video Streaming',
       'Geofenced Autonomous Flight',
       'First-Responder Dispatch Link',
-      'Battery Swap Automation',
-      'Weather Monitoring Integration',
-      'Aviation Compliance Setup',
-      'Payload Gimbal Calibration',
-      'Emergency Override Controls',
-      'Fleet Maintenance & AMC'
+      // 'Battery Swap Automation',
+      // 'Weather Monitoring Integration',
+      // 'Aviation Compliance Setup',
+      // 'Payload Gimbal Calibration',
+      // 'Emergency Override Controls',
+      // 'Fleet Maintenance & AMC'
     ]
   }
 ];
