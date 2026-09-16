@@ -24,6 +24,8 @@ interface FeaturedCardData {
     md: string;
     lg?: string;
   };
+  objectFit?: 'cover' | 'contain';
+  objectPosition?: string;
   contentPosition?: 'top' | 'bottom';
 }
 
@@ -43,6 +45,8 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
     md: '340px',
     lg: '390px',
   },
+  objectFit = 'cover',
+  objectPosition = 'center',
   contentPosition = 'bottom',
 }) => {
   return (
@@ -76,7 +80,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
           },
         },
         '&:hover .featured-card-image': {
-          transform: 'scale(1.045)',
+          transform: 'scale(1.03)',
         },
         '&:hover .featured-card-gradient': {
           background:
@@ -99,8 +103,8 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
           width: '100%',
           height: '100%',
           display: 'block',
-          objectFit: 'cover',
-          objectPosition: 'center',
+          objectFit,
+          objectPosition,
           zIndex: 1,
           transform: 'scale(1)',
           transition:
@@ -329,8 +333,8 @@ export const FeaturedWorks: React.FC = () => {
       width: {
         xs: '100%',
         sm: '100%',
-        md: 'calc(62% - 8px)',
-        lg: 'calc(62% - 8px)',
+        md: '100%',
+        lg: '100%',
       },
       height: {
         xs: '204px',
@@ -350,8 +354,8 @@ export const FeaturedWorks: React.FC = () => {
       width: {
         xs: '100%',
         sm: '100%',
-        md: 'calc(38% - 16px)',
-        lg: 'calc(38% - 16px)',
+        md: '100%',
+        lg: '100%',
       },
       height: {
         xs: '204px',
@@ -375,11 +379,13 @@ export const FeaturedWorks: React.FC = () => {
         lg: '100%',
       },
       height: {
-        xs: '204px',
-        sm: '260px',
-        md: '340px',
-        lg: '390px',
+        xs: '300px',
+        sm: '420px',
+        md: '520px',
+        lg: '650px',
       },
+      objectFit: 'cover',
+      objectPosition: 'center 55%', // Shifted 2 steps down to reveal top mount area
       contentPosition: 'bottom',
     },
   ];
@@ -524,16 +530,11 @@ export const FeaturedWorks: React.FC = () => {
           sx={{
             width: '100%',
             maxWidth: '100%',
-            display: 'flex',
-            flexDirection: {
-              xs: 'column',
-              sm: 'column',
-              md: 'row',
-            },
-            flexWrap: {
-              xs: 'nowrap',
-              sm: 'nowrap',
-              md: 'wrap',
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: '1fr',
+              md: '1.6fr 1fr',
             },
             gap: {
               xs: '12px',
@@ -542,8 +543,13 @@ export const FeaturedWorks: React.FC = () => {
               lg: '20px',
             },
             boxSizing: 'border-box',
-            overflow: 'visible',
-            alignItems: 'stretch',
+            '& > *:nth-of-type(3)': {
+              gridColumn: {
+                xs: '1',
+                sm: '1',
+                md: '1 / -1',
+              },
+            },
           }}
         >
           {cards.map((card, index) => (
