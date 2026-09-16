@@ -14,18 +14,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <Box
       sx={{
         position: "relative",
-
         width: "100%",
 
-        /*
-         * IMPORTANT:
-         * Keep the card within the visible Products section.
-         */
         height: {
-          xs: "330px",
-          sm: "350px",
-          md: "370px",
-          lg: "390px",
+          xs: "410px",
+          sm: "380px",
+          md: "360px",
+          lg: "310px",
         },
 
         borderRadius: {
@@ -59,10 +54,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         },
       }}
     >
-      {/* =====================================================
-          PRODUCT IMAGE
-          ===================================================== */}
-
       {product.image && (
         <Box
           component="img"
@@ -71,17 +62,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           alt={product.title}
           sx={{
             position: "absolute",
-
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            inset: 0,
 
             width: "100%",
             height: "100%",
 
             objectFit: "cover",
-
             objectPosition: "center",
 
             display: "block",
@@ -96,77 +82,62 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         />
       )}
 
-      {/* =====================================================
-          DARK GRADIENT
-          ===================================================== */}
-
       <Box
         sx={{
           position: "absolute",
+          inset: 0,
 
-          left: 0,
-          right: 0,
-          bottom: 0,
-
-          height: "60%",
+          zIndex: 2,
 
           background:
             "linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.68) 35%, rgba(0, 0, 0, 0.15) 75%, rgba(0, 0, 0, 0) 100%)",
-
-          zIndex: 2,
 
           pointerEvents: "none",
         }}
       />
 
-      {/* =====================================================
-          PRODUCT CONTENT
-          ===================================================== */}
-
       <Box
         sx={{
           position: "absolute",
-
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
 
           zIndex: 3,
 
           boxSizing: "border-box",
 
-          /*
-           * Responsive padding.
-           */
-          p: {
-            xs: "16px",
-            sm: "18px",
-            md: "20px",
-            lg: "22px",
+          width: "100%",
+          height: "100%",
+
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+
+          alignItems: "flex-start",
+
+          px: {
+            xs: 2,
+            sm: 2.25,
+            md: 2.75,
+            lg: 3,
+          },
+
+          pb: {
+            xs: 2,
+            sm: 2.25,
+            md: 2.75,
+            lg: 3,
           },
 
           color: "#FFFFFF",
-
-          /*
-           * Keep the content inside the card.
-           */
-          width: "100%",
-
-          display: "flex",
-
-          flexDirection: "column",
-
-          justifyContent: "flex-end",
         }}
       >
-        {/* =================================================
-            PRODUCT TITLE
-            ================================================= */}
-
         <Typography
           component="h3"
           sx={{
-            margin: 0,
+            m: 0,
+
+            width: "100%",
+            maxWidth: "100%",
 
             fontFamily:
               '"Trueno", "Sora", sans-serif',
@@ -189,35 +160,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             textShadow:
               "0 2px 8px rgba(0,0,0,0.6)",
 
-            /*
-             * IMPORTANT:
-             * Do not clip the title.
-             */
-            overflow: "visible",
-
-            textOverflow: "unset",
-
             whiteSpace: "normal",
 
             wordBreak: "break-word",
 
-            display: "block",
+            overflowWrap: "break-word",
           }}
         >
           {product.title}
         </Typography>
 
-        {/* =================================================
-            PRODUCT SUBTITLE
-            ================================================= */}
-
         {product.subtitle && (
           <Typography
             component="p"
             sx={{
-              margin: 0,
+              m: 0,
 
-              marginTop: "6px",
+              mt: 0.75,
+
+              width: "100%",
+              maxWidth: "100%",
 
               fontFamily:
                 '"Manrope", sans-serif',
@@ -247,8 +209,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               WebkitLineClamp: 2,
 
               overflow: "hidden",
-
-              maxWidth: "100%",
             }}
           >
             {product.subtitle}

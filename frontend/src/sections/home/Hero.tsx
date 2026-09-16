@@ -222,13 +222,13 @@ export const Hero: React.FC<HeroProps> = ({
                   height: {
                     xs: 42,
                     sm: 46,
-                    md: 54,
+                    md: 50,
                   },
 
                   px: {
                     xs: 2,
-                    sm: 2.5,
-                    md: 3,
+                    sm: 2.3,
+                    md: 2.5,
                   },
 
                   borderRadius: {
@@ -298,13 +298,13 @@ export const Hero: React.FC<HeroProps> = ({
                   height: {
                     xs: 42,
                     sm: 46,
-                    md: 54,
+                    md: 50,
                   },
 
                   px: {
                     xs: 2,
-                    sm: 2.5,
-                    md: 3,
+                    sm: 2.3,
+                    md: 2.5,
                   },
 
                   borderRadius: {
