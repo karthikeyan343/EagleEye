@@ -56,7 +56,7 @@ export const StatsSection: React.FC = () => {
                 fontFamily: "'Manrope', sans-serif",
                 fontSize: { xs: '13.5px', sm: '14.5px' },
                 lineHeight: 1.5,
-                color: '#64748B',
+                color: '#536a89',
                 margin: 0,
               }}
             >

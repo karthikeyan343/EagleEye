@@ -285,10 +285,10 @@ px: {
              * -------------------------------------------------
              */
             height: {
-              xs: "58px",
-              sm: "60px",
-              md: "62px",
-              lg: "65px",
+              xs: "65px",
+              sm: "68px",
+              md: "70px",
+              lg: "72px",
             },
 
             boxSizing: "border-box",
@@ -340,7 +340,7 @@ px: {
              *   gray/dark gray glass
              */
             backgroundColor: isScrolled
-              ? "rgba(34, 30, 30, 0.94)"
+              ? "rgba(10, 20, 34, 0.92)"
               : "rgba(10, 20, 34, 0.42)",
 
             /*
@@ -399,9 +399,9 @@ px: {
               flexShrink: 0,
 
               height: {
-                xs: "38px",
-                sm: "38px",
-                md: "40px",
+                xs: "40px",
+                sm: "42px",
+                md: "45px",
                 lg: "50px",
               },
 
