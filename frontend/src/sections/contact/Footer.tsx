@@ -122,87 +122,210 @@ export const Footer: React.FC = () => {
           }}
         >
           {/* NAVIGATION AREA */}
-          <Box
-            sx={{
-              width: '100%',
-              maxWidth: '1200px',
-              display: 'grid',
-              gridTemplateColumns: {
-                xs: '1fr',
-                sm: 'repeat(3, 1fr)',
-              },
-              justifyItems: {
-                xs: 'flex-start',
-                sm: 'center',
-              },
-              columnGap: {
-                xs: '20px',
-                sm: '30px',
-                md: '40px',
-              },
-              rowGap: {
-                xs: '20px',
-                sm: '24px',
-                md: '0px',
-              },
-              mb: { xs: 4, sm: 5, md: 6 },
-              zIndex: 3,
-            }}
-          >
-            {/* COLUMN 1 */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: { xs: '10px', sm: '12px' },
-                alignItems: { xs: 'flex-start', sm: 'flex-start' },
-              }}
-            >
-              <MuiLink href="#products" sx={blueLinkStyle}>
-                Products ↗
-              </MuiLink>
+<Box
+  sx={{
+    width: '100%',
+    maxWidth: '1200px',
+    display: 'grid',
 
-              <MuiLink href="#services" sx={blueLinkStyle}>
-                Services ↗
-              </MuiLink>
-            </Box>
+    gridTemplateColumns: {
+      xs: 'repeat(2, minmax(0, 1fr))',
+      sm: 'repeat(3, 1fr)',
+    },
 
-            {/* COLUMN 2 */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: { xs: '10px', sm: '12px' },
-                alignItems: { xs: 'flex-start', sm: 'flex-start' },
-              }}
-            >
-              <MuiLink href="#who-we-are" sx={blueLinkStyle}>
-                About EagleEye ↗
-              </MuiLink>
+    justifyItems: {
+      xs: 'start',
+      sm: 'center',
+    },
 
-              <MuiLink href="#contact" sx={blueLinkStyle}>
-                Contact ↗
-              </MuiLink>
-            </Box>
+    columnGap: {
+      xs: '20px',
+      sm: '30px',
+      md: '40px',
+    },
 
-            {/* COLUMN 3 (CONTACT INFO) */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: { xs: '10px', sm: '12px' },
-                alignItems: { xs: 'flex-start', sm: 'flex-start' },
-              }}
-            >
-              <MuiLink href="tel:+919876543210" sx={blueLinkStyle}>
-                +91 987 6543 210
-              </MuiLink>
+    rowGap: {
+      xs: '16px',
+      sm: '24px',
+      md: '0px',
+    },
 
-              <MuiLink href="mailto:info@eagleeyesolution.in" sx={blueLinkStyle}>
-                info@eagleeyesolution.in
-              </MuiLink>
-            </Box>
-          </Box>
+    mb: {
+      xs: 3,
+      sm: 5,
+      md: 6,
+    },
+
+    zIndex: 3,
+  }}
+>
+  {/* COLUMN 1 */}
+
+  <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+
+      gap: {
+        xs: '8px',
+        sm: '12px',
+        md: '12px',
+      },
+
+      alignItems: {
+        xs: 'flex-start',
+        sm: 'flex-start',
+      },
+
+      minWidth: 0,
+    }}
+  >
+    <MuiLink
+      href="#products"
+      sx={blueLinkStyle}
+    >
+      Products ↗
+    </MuiLink>
+
+    <MuiLink
+      href="#services"
+      sx={blueLinkStyle}
+    >
+      Services ↗
+    </MuiLink>
+  </Box>
+
+  {/* COLUMN 2 */}
+
+  <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+
+      gap: {
+        xs: '8px',
+        sm: '12px',
+        md: '12px',
+      },
+
+      alignItems: {
+        xs: 'flex-start',
+        sm: 'flex-start',
+      },
+
+      minWidth: 0,
+    }}
+  >
+    <MuiLink
+      href="#who-we-are"
+      sx={blueLinkStyle}
+    >
+      About EagleEye ↗
+    </MuiLink>
+
+    <MuiLink
+      href="#contact"
+      sx={blueLinkStyle}
+    >
+      Contact ↗
+    </MuiLink>
+  </Box>
+
+  {/* COLUMN 3 - CONTACT INFO */}
+
+  <Box
+    sx={{
+      display: 'flex',
+
+      /*
+       * XS: stack phone and email vertically.
+       * SM/MD: keep your original column layout.
+       */
+      flexDirection: {
+        xs: 'column',
+        sm: 'column',
+      },
+
+      gap: {
+        xs: '8px',
+        sm: '12px',
+        md: '12px',
+      },
+
+      alignItems: {
+        xs: 'flex-start',
+        sm: 'flex-start',
+      },
+
+      minWidth: 0,
+
+      /*
+       * XS: use the complete row.
+       * SM/MD: original behavior.
+       */
+      gridColumn: {
+        xs: '1 / -1',
+        sm: 'auto',
+      },
+
+      width: {
+        xs: '100%',
+        sm: 'auto',
+      },
+
+      /*
+       * Separate contact information from
+       * the navigation above.
+       */
+      borderTop: {
+        xs: '1px solid rgba(255, 255, 255, 0.20)',
+        sm: 'none',
+      },
+
+      mt: {
+        xs: '2px',
+        sm: 0,
+      },
+
+      pt: {
+        xs: '12px',
+        sm: 0,
+      },
+    }}
+  >
+    <MuiLink
+      href="tel:+919876543210"
+      sx={{
+        ...blueLinkStyle,
+
+        /*
+         * Make sure the phone number stays
+         * on one line on XS.
+         */
+        whiteSpace: {
+          xs: 'nowrap',
+          sm: 'normal',
+        },
+      }}
+    >
+      +91 987 6543 210
+    </MuiLink>
+
+    <MuiLink
+      href="mailto:info@eagleeyesolution.in"
+      sx={{
+        ...blueLinkStyle,
+
+        /*
+         * Email can wrap only when necessary.
+         */
+        overflowWrap: 'anywhere',
+      }}
+    >
+      info@eagleeyesolution.in
+    </MuiLink>
+  </Box>
+</Box>
 
           {/* LARGE EAGLEEYE SOLUTION TEXT */}
           <Typography
@@ -215,7 +338,7 @@ export const Footer: React.FC = () => {
               fontFamily:
                 "'Trueno', 'Plus Jakarta Sans', sans-serif",
               fontWeight: 900,
-              fontSize: 'clamp(2rem, 8.5vw, 9.5rem)',
+              fontSize: 'clamp(1.7rem, 8.2vw, 9.4rem)',
               lineHeight: 0.85,
               letterSpacing: '-0.045em',
               color: 'rgba(210, 224, 255, 0.82)',
