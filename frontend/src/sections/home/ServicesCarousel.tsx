@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import {
   Box,
@@ -19,210 +19,292 @@ import Breathe from '../../assets/images/products/breathe.png';
 
 export const ServicesCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const currentIndexRef = useRef(0);
+  const dragStartXRef = useRef(0);
+  const dragScrollLeftRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
+  const scrollTimeoutRef = useRef<number | null>(null);
 
-  // ==========================================================
-  // DRAG STATE
-  // ==========================================================
-
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
-  // ==========================================================
-  // CUSTOM SERVICE IMAGES
-  // ==========================================================
-
-  const modifiedServicesData = servicesData.map(
-    (service, index) => {
-      if (index === 0) {
-        return {
-          ...service,
-          image: Frame12,
-        };
-      }
-
-      if (index === 1) {
-        return {
-          ...service,
-          image: ANPR,
-        };
-      }
-
-      if (index === 2) {
-        return {
-          ...service,
-          image: ANPR,
-        };
-      }
-
-      if (index === 3) {
-        return {
-          ...service,
-          image: Breathe,
-        };
-      }
-
-      return service;
-    }
-  );
+  const modifiedServicesData = servicesData.map((service, index) => {
+    if (index === 0) return { ...service, image: Frame12 };
+    if (index === 1) return { ...service, image: ANPR };
+    if (index === 2) return { ...service, image: ANPR };
+    if (index === 3) return { ...service, image: Breathe };
+    return service;
+  });
 
   const totalServices = modifiedServicesData.length;
+  const COPY_COUNT = 5;
+  const MIDDLE_COPY = 2;
+  const infiniteServicesData = Array.from({ length: COPY_COUNT }, () => modifiedServicesData).flat();
 
-  // ==========================================================
-  // SCROLL TO CARD
-  // ==========================================================
+  const setActiveIndex = useCallback((index: number) => {
+    currentIndexRef.current = index;
+    setCurrentIndex(index);
+  }, []);
 
-  const scrollToCard = (index: number) => {
-    if (!containerRef.current) {
-      return;
-    }
+  const getCardElements = useCallback(() => {
+    if (!containerRef.current) return [] as HTMLElement[];
+    return Array.from(containerRef.current.children) as HTMLElement[];
+  }, []);
 
-    const cardElements = containerRef.current.children;
+  const getNormalizedIndex = useCallback(
+    (index: number, total: number) => {
+      if (total <= 0) return 0;
+      const baseIndex = ((index % total) + total) % total;
+      return total * MIDDLE_COPY + baseIndex;
+    },
+    [MIDDLE_COPY]
+  );
 
-    if (!cardElements[index]) {
-      return;
-    }
+  const scrollToCard = useCallback(
+    (index: number, behavior: ScrollBehavior = 'smooth') => {
+      const container = containerRef.current;
+      if (!container) return;
 
-    const card = cardElements[index] as HTMLElement;
+      const cards = container.children;
+      const card = cards[index] as HTMLElement | undefined;
+      if (!card) return;
+
+      container.scrollTo({
+        left: card.offsetLeft,
+        behavior,
+      });
+    },
+    []
+  );
+
+  const findClosestCardIndex = useCallback(() => {
     const container = containerRef.current;
-    const cardLeft = card.offsetLeft;
+    if (!container) return 0;
 
-    container.scrollTo({
-      left: cardLeft,
-      behavior: 'smooth',
-    });
-  };
-
-  // ==========================================================
-  // PREVIOUS
-  // ==========================================================
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => {
-      const nextIndex =
-        prev === 0
-          ? totalServices - 1
-          : prev - 1;
-
-      scrollToCard(nextIndex);
-
-      return nextIndex;
-    });
-  };
-
-  // ==========================================================
-  // NEXT
-  // ==========================================================
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => {
-      const nextIndex =
-        prev === totalServices - 1
-          ? 0
-          : prev + 1;
-
-      scrollToCard(nextIndex);
-
-      return nextIndex;
-    });
-  };
-
-  // ==========================================================
-  // MOUSE DRAG START
-  // ==========================================================
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!containerRef.current) {
-      return;
-    }
-
-    setIsDragging(true);
-
-    setStartX(
-      e.pageX - containerRef.current.offsetLeft
-    );
-
-    setScrollLeft(containerRef.current.scrollLeft);
-  };
-
-  // ==========================================================
-  // MOUSE DRAG MOVE
-  // ==========================================================
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !containerRef.current) {
-      return;
-    }
-
-    e.preventDefault();
-
-    const x =
-      e.pageX - containerRef.current.offsetLeft;
-
-    const walk = (x - startX) * 1.5;
-
-    containerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  // ==========================================================
-  // MOUSE DRAG END
-  // ==========================================================
-
-  const handleMouseUpOrLeave = () => {
-    if (!isDragging || !containerRef.current) {
-      return;
-    }
-
-    setIsDragging(false);
-
-    const container = containerRef.current;
-    const children = Array.from(container.children) as HTMLElement[];
-
-    if (!children.length) {
-      return;
-    }
-
-    let closestIndex = 0;
+    const cards = Array.from(container.children) as HTMLElement[];
+    let closestIndex = currentIndexRef.current;
     let closestDistance = Infinity;
 
-    children.forEach((child, index) => {
-      const distance = Math.abs(
-        child.offsetLeft - container.scrollLeft
-      );
-
+    cards.forEach((card, index) => {
+      const distance = Math.abs(card.offsetLeft - container.scrollLeft);
       if (distance < closestDistance) {
         closestDistance = distance;
         closestIndex = index;
       }
     });
 
-    setCurrentIndex(closestIndex);
-    scrollToCard(closestIndex);
+    return closestIndex;
+  }, []);
+
+  const recenterIfNeeded = useCallback(() => {
+    const container = containerRef.current;
+    if (!container || totalServices <= 0 || isDraggingRef.current) return;
+
+    const currentIdx = currentIndexRef.current;
+    const normalizedIdx = getNormalizedIndex(currentIdx, totalServices);
+
+    if (currentIdx !== normalizedIdx) {
+      const cards = getCardElements();
+      const currentCard = cards[currentIdx];
+      const targetCard = cards[normalizedIdx];
+
+      if (currentCard && targetCard) {
+        const scrollOffset = targetCard.offsetLeft - currentCard.offsetLeft;
+
+        // Teleport position instantly without visual scroll jump
+        container.style.scrollBehavior = 'auto';
+        container.style.scrollSnapType = 'none';
+
+        container.scrollLeft += scrollOffset;
+
+        // Force browser layout recalculation
+        void container.offsetWidth;
+
+        container.style.scrollSnapType = 'x mandatory';
+        container.style.scrollBehavior = 'smooth';
+
+        setActiveIndex(normalizedIdx);
+      }
+    }
+  }, [getCardElements, getNormalizedIndex, setActiveIndex, totalServices]);
+
+  const updateActiveFromScroll = useCallback(() => {
+    if (!containerRef.current) return;
+
+    const nearest = findClosestCardIndex();
+    if (nearest !== currentIndexRef.current) {
+      setActiveIndex(nearest);
+    }
+  }, [findClosestCardIndex, setActiveIndex]);
+
+  const handleScroll = useCallback(() => {
+    if (rafRef.current !== null) return;
+
+    rafRef.current = window.requestAnimationFrame(() => {
+      rafRef.current = null;
+      updateActiveFromScroll();
+
+      if (scrollTimeoutRef.current !== null) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = window.setTimeout(() => {
+        recenterIfNeeded();
+      }, 150);
+    });
+  }, [recenterIfNeeded, updateActiveFromScroll]);
+
+  const moveBy = useCallback(
+    (delta: number) => {
+      const container = containerRef.current;
+      if (!container || totalServices === 0) return;
+
+      const current = currentIndexRef.current;
+      const target = current + delta;
+      const cards = getCardElements();
+
+      if (!cards[target]) return;
+
+      setActiveIndex(target);
+      scrollToCard(target, 'smooth');
+    },
+    [getCardElements, scrollToCard, setActiveIndex, totalServices]
+  );
+
+  const handlePrev = useCallback(() => moveBy(-1), [moveBy]);
+  const handleNext = useCallback(() => moveBy(1), [moveBy]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    isDraggingRef.current = true;
+    setIsDragging(true);
+    dragStartXRef.current = e.pageX - container.offsetLeft;
+    dragScrollLeftRef.current = container.scrollLeft;
+
+    container.style.scrollBehavior = 'auto';
+    container.style.scrollSnapType = 'none';
   };
 
-  // ==========================================================
-  // KEYBOARD NAVIGATION
-  // ==========================================================
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const container = containerRef.current;
+    if (!isDraggingRef.current || !container) return;
+
+    e.preventDefault();
+
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - dragStartXRef.current) * 1.5;
+    container.scrollLeft = dragScrollLeftRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    const container = containerRef.current;
+    if (!isDraggingRef.current || !container) return;
+
+    isDraggingRef.current = false;
+    setIsDragging(false);
+
+    container.style.scrollSnapType = 'x mandatory';
+    container.style.scrollBehavior = 'smooth';
+
+    const nearest = findClosestCardIndex();
+    setActiveIndex(nearest);
+    scrollToCard(nearest, 'smooth');
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || totalServices === 0) return;
+
+    const initialIndex = totalServices * MIDDLE_COPY;
+
+    const frame = window.requestAnimationFrame(() => {
+      container.style.scrollBehavior = 'auto';
+      container.style.scrollSnapType = 'none';
+      scrollToCard(initialIndex, 'auto');
+      setActiveIndex(initialIndex);
+
+      window.requestAnimationFrame(() => {
+        container.style.scrollSnapType = 'x mandatory';
+        container.style.scrollBehavior = 'smooth';
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [scrollToCard, setActiveIndex, totalServices]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScrollEnd = () => {
+      recenterIfNeeded();
+    };
+
+    container.addEventListener('scrollend', handleScrollEnd);
+    return () => {
+      container.removeEventListener('scrollend', handleScrollEnd);
+    };
+  }, [recenterIfNeeded]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        handlePrev();
-      }
-
-      if (e.key === 'ArrowRight') {
-        handleNext();
-      }
+      if (e.key === 'ArrowLeft') handlePrev();
+      if (e.key === 'ArrowRight') handleNext();
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleNext, handlePrev]);
 
+  useEffect(() => {
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current);
+      }
+      if (scrollTimeoutRef.current !== null) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
     };
   }, []);
+
+  // Shared Arrow Controls Component
+  const renderNavigationButtons = (
+    <Stack direction="row" spacing={1.5} alignItems="center">
+      <IconButton
+        aria-label="previous service"
+        onClick={handlePrev}
+        sx={{
+          width: { xs: 42, md: 48 },
+          height: { xs: 42, md: 48 },
+          backgroundColor: '#FFFFFF',
+          color: '#000000',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          '&:hover': { backgroundColor: '#E2E8F0' },
+        }}
+      >
+        <ArrowBackIosNewIcon fontSize="small" />
+      </IconButton>
+
+      <IconButton
+        aria-label="next service"
+        onClick={handleNext}
+        sx={{
+          width: { xs: 42, md: 48 },
+          height: { xs: 42, md: 48 },
+          backgroundColor: '#FFFFFF',
+          color: '#000000',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          '&:hover': { backgroundColor: '#E2E8F0' },
+        }}
+      >
+        <ArrowForwardIosIcon fontSize="small" />
+      </IconButton>
+    </Stack>
+  );
 
   return (
     <Box
@@ -336,12 +418,12 @@ export const ServicesCarousel: React.FC = () => {
                 md: 'center',
               },
               gap: {
-                xs: 3,
+                xs: 2,
                 md: 2,
               },
               mb: {
-                xs: 4,
-                sm: 4,
+                xs: 2.5,
+                sm: 3,
                 md: 4,
                 lg: '28px',
               },
@@ -406,68 +488,24 @@ export const ServicesCarousel: React.FC = () => {
               </Typography>
             </Box>
 
-            {/* NAVIGATION BUTTONS */}
-            <Stack
-              direction="row"
-              spacing={1.5}
-              alignItems="center"
+            {/* DESKTOP NAVIGATION BUTTONS */}
+            <Box
               sx={{
+                display: {
+                  xs: 'none',
+                  md: 'flex',
+                },
                 flexShrink: 0,
               }}
             >
-              <IconButton
-                aria-label="previous service"
-                onClick={handlePrev}
-                sx={{
-                  width: {
-                    xs: 42,
-                    md: 48,
-                  },
-                  height: {
-                    xs: 42,
-                    md: 48,
-                  },
-                  backgroundColor: '#FFFFFF',
-                  color: '#000000',
-                  borderRadius: '12px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                  '&:hover': {
-                    backgroundColor: '#E2E8F0',
-                  },
-                }}
-              >
-                <ArrowBackIosNewIcon fontSize="small" />
-              </IconButton>
-
-              <IconButton
-                aria-label="next service"
-                onClick={handleNext}
-                sx={{
-                  width: {
-                    xs: 42,
-                    md: 48,
-                  },
-                  height: {
-                    xs: 42,
-                    md: 48,
-                  },
-                  backgroundColor: '#FFFFFF',
-                  color: '#000000',
-                  borderRadius: '12px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                  '&:hover': {
-                    backgroundColor: '#E2E8F0',
-                  },
-                }}
-              >
-                <ArrowForwardIosIcon fontSize="small" />
-              </IconButton>
-            </Stack>
+              {renderNavigationButtons}
+            </Box>
           </Box>
 
           {/* CAROUSEL */}
           <Box
             ref={containerRef}
+            onScroll={handleScroll}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
@@ -486,10 +524,7 @@ export const ServicesCarousel: React.FC = () => {
                 lg: 'auto',
               },
               display: 'flex',
-              alignItems: {
-                xs: 'stretch',
-                lg: 'flex-start',
-              },
+              alignItems: 'center', // Centered to prevent top/bottom clipping when scaled
               gap: {
                 xs: '16px',
                 md: '20px',
@@ -506,15 +541,15 @@ export const ServicesCarousel: React.FC = () => {
               },
               boxSizing: 'border-box',
               py: {
-                xs: 2,
-                lg: 0,
+                xs: 2.5,
+                lg: '20px', // Room provided so zoomed card (scale 1.02) won't get cut at top
               },
               flexShrink: 0,
             }}
           >
-            {modifiedServicesData.map((service, index) => (
+            {infiniteServicesData.map((service, index) => (
               <Box
-                key={service.id || index}
+                key={`${service.id || index}-${index}`}
                 sx={{
                   flex: {
                     xs: '0 0 100%',
@@ -526,14 +561,14 @@ export const ServicesCarousel: React.FC = () => {
                   },
                   height: {
                     xs: 'auto',
-                    lg: 'calc(100% - 24px)',
+                    lg: 'calc(100% - 16px)',
                   },
                   minHeight: {
                     xs: 'auto',
                     lg: 0,
                   },
                   maxHeight: {
-                    lg: 'calc(100% - 24px)',
+                    lg: 'calc(100% - 16px)',
                   },
                   display: 'grid',
                   gridTemplateColumns: {
@@ -553,8 +588,21 @@ export const ServicesCarousel: React.FC = () => {
                   },
                   borderRadius: '16px',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
-                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.45)',
+                  backgroundColor:
+                    index === currentIndex
+                      ? 'rgba(255, 255, 255, 0.075)'
+                      : 'rgba(255, 255, 255, 0.02)',
+                  boxShadow:
+                    index === currentIndex
+                      ? '0 0 0 1px rgba(255, 255, 255, 0.12), 0 24px 55px rgba(0, 0, 0, 0.65), 0 0 35px rgba(255, 255, 255, 0.08)'
+                      : '0 20px 40px rgba(0, 0, 0, 0.45)',
+                  filter: index === currentIndex ? 'brightness(1.12)' : 'brightness(0.58)',
+                  transform: index === currentIndex ? 'scale(1.02)' : 'scale(1)',
+                  transformOrigin: 'center center', // Ensures scaling grows evenly without moving top off-screen
+                  opacity: index === currentIndex ? 1 : 0.72,
+                  zIndex: index === currentIndex ? 2 : 1,
+                  transition:
+                    'transform 450ms ease, filter 450ms ease, opacity 450ms ease, box-shadow 450ms ease, background-color 450ms ease',
                   scrollSnapAlign: 'start',
                   boxSizing: 'border-box',
                   userSelect: 'none',
@@ -592,6 +640,7 @@ export const ServicesCarousel: React.FC = () => {
                       display: 'block',
                       borderRadius: '16px',
                       pointerEvents: 'none',
+                      transition: 'filter 450ms ease',
                     }}
                   />
                 </Box>
@@ -616,7 +665,6 @@ export const ServicesCarousel: React.FC = () => {
                     boxSizing: 'border-box',
                   }}
                 >
-                  {/* TITLE + DESCRIPTION */}
                   <Box
                     sx={{
                       display: 'flex',
@@ -670,7 +718,6 @@ export const ServicesCarousel: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  {/* CAPABILITY PILLS */}
                   <Box
                     sx={{
                       display: 'flex',
@@ -744,6 +791,23 @@ export const ServicesCarousel: React.FC = () => {
                 </Box>
               </Box>
             ))}
+          </Box>
+
+          {/* MOBILE NAVIGATION BUTTONS AT BOTTOM */}
+          <Box
+            sx={{
+              display: {
+                xs: 'flex',
+                md: 'none',
+              },
+              justifyContent: 'center',
+              width: '100%',
+              mt: 2,
+              mb: 0.5,
+              flexShrink: 0,
+            }}
+          >
+            {renderNavigationButtons}
           </Box>
         </Box>
       </Container>
