@@ -42,16 +42,9 @@ export const ContactSection: React.FC = () => {
     null
   );
 
-  // ============================================================
-  // FORM VALIDATION
-  // ============================================================
-
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // ----------------------------------------------------------
-    // NAME
-    // ----------------------------------------------------------
 
     if (!formData.name.trim()) {
       newErrors.name = "Your name is required";
@@ -60,10 +53,6 @@ export const ContactSection: React.FC = () => {
         "Please enter a valid name using letters only.";
     }
 
-    // ----------------------------------------------------------
-    // EMAIL
-    // ----------------------------------------------------------
-
     if (!formData.email.trim()) {
       newErrors.email = "Email address is required";
     } else if (!isValidEmail(formData.email)) {
@@ -71,20 +60,13 @@ export const ContactSection: React.FC = () => {
         "Please enter a valid email address";
     }
 
-    // ----------------------------------------------------------
-    // PHONE
-    // ----------------------------------------------------------
 
     if (formData.phone.trim()) {
-      if (!isValidPhone(formData.phone)) {
+      if (!/^\d{10}$/.test(formData.phone)) {
         newErrors.phone =
-          "Please enter a valid phone number";
+          "Phone number must be exactly 10 digits";
       }
     }
-
-    // ----------------------------------------------------------
-    // MESSAGE
-    // ----------------------------------------------------------
 
     if (!formData.message.trim()) {
       newErrors.message =
@@ -102,9 +84,6 @@ export const ContactSection: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ============================================================
-  // GENERIC INPUT CHANGE
-  // ============================================================
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -125,12 +104,6 @@ export const ContactSection: React.FC = () => {
       }));
     }
   };
-
-  // ============================================================
-  // NAME CHANGE
-  // Numbers and unwanted special characters are removed
-  // while the user is typing.
-  // ============================================================
 
   const handleNameChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -153,9 +126,25 @@ export const ContactSection: React.FC = () => {
     }
   };
 
-  // ============================================================
-  // SUBMIT
-  // ============================================================
+  const handlePhoneChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value
+      .replace(/\D/g, "")
+      .slice(0, 10);
+
+    setFormData((prev) => ({
+      ...prev,
+      phone: value,
+    }));
+
+    if (errors.phone) {
+      setErrors((prev) => ({
+        ...prev,
+        phone: undefined,
+      }));
+    }
+  };
 
   const handleSubmit = async (
     e: React.FormEvent
@@ -165,7 +154,6 @@ export const ContactSection: React.FC = () => {
     setErrorMessage(null);
     setSubmitSuccess(false);
 
-    // Validate before sending request
     if (!validate()) {
       return;
     }
@@ -304,11 +292,6 @@ export const ContactSection: React.FC = () => {
                   engineers will respond within 24 hours.
                 </Typography>
               </Box>
-
-              {/* ------------------------------------------------
-                  ERROR MESSAGE
-                  ------------------------------------------------ */}
-
               {errorMessage && (
                 <Alert
                   severity="error"
@@ -322,10 +305,6 @@ export const ContactSection: React.FC = () => {
                   {errorMessage}
                 </Alert>
               )}
-
-              {/* ------------------------------------------------
-                  SUCCESS MESSAGE
-                  ------------------------------------------------ */}
 
               {submitSuccess && (
                 <Alert
@@ -346,27 +325,16 @@ export const ContactSection: React.FC = () => {
                   Our team will contact you shortly.
                 </Alert>
               )}
-
-              {/* ==================================================
-                  CONTACT FORM
-                  ================================================== */}
-
               <Box
                 component="form"
                 onSubmit={handleSubmit}
                 noValidate
               >
                 <Stack spacing={3}>
-                  {/* =================================================
-                      NAME + EMAIL
-                      ================================================= */}
-
                   <Grid
                     container
                     spacing={2}
                   >
-                    {/* NAME */}
-
                     <Grid
                       item
                       xs={12}
@@ -399,9 +367,6 @@ export const ContactSection: React.FC = () => {
                         }}
                       />
                     </Grid>
-
-                    {/* EMAIL */}
-
                     <Grid
                       item
                       xs={12}
@@ -437,24 +402,20 @@ export const ContactSection: React.FC = () => {
                     </Grid>
                   </Grid>
 
-                  {/* =================================================
-                      PHONE
-                      ================================================= */}
-
                   <TextField
                     fullWidth
                     id="contact-phone"
                     name="phone"
                     label="Phone Number (Optional)"
-                    placeholder="+91 98765 43210"
+                    placeholder="9876543210"
                     value={formData.phone}
-                    onChange={handleChange}
+                    onChange={handlePhoneChange}
                     error={Boolean(errors.phone)}
                     helperText={errors.phone}
                     variant="standard"
                     inputProps={{
-                      maxLength: 20,
-                      inputMode: "tel",
+                      maxLength: 10,
+                      inputMode: "numeric",
                     }}
                     InputLabelProps={{
                       shrink: true,
@@ -468,11 +429,6 @@ export const ContactSection: React.FC = () => {
                       },
                     }}
                   />
-
-                  {/* =================================================
-                      MESSAGE
-                      ================================================= */}
-
                   <TextField
                     fullWidth
                     id="contact-message"
@@ -504,11 +460,6 @@ export const ContactSection: React.FC = () => {
                       },
                     }}
                   />
-
-                  {/* =================================================
-                      SUBMIT BUTTON
-                      ================================================= */}
-
                   <Box sx={{ pt: 1 }}>
                     <Button
                       type="submit"
@@ -565,10 +516,6 @@ export const ContactSection: React.FC = () => {
             </Box>
           </Grid>
 
-          {/* ====================================================
-              RIGHT COLUMN — GOOGLE MAP
-              ==================================================== */}
-
           <Grid item xs={12} lg={6}>
             <Box
               sx={{
@@ -587,10 +534,6 @@ export const ContactSection: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
-
-      {/* ========================================================
-          SUCCESS SNACKBAR
-          ======================================================== */}
 
       <Snackbar
         open={submitSuccess}
